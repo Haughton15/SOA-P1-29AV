@@ -2,6 +2,8 @@ using Microsoft.EntityFrameworkCore;
 using Repository.Context;
 using Service.IServices;
 using Service.Services;
+using System.Net;
+using System.Net.Mail;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +11,21 @@ IConfiguration configuration = builder.Configuration;
 
 builder.Services.AddDbContext<ApplicationDbContext>
     (options => options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddScoped<SmtpClient>(serviceProvider =>
+{
+    string smtpServer = configuration["SmtpConfig:SmtpServer"];
+    int smtpPort = Convert.ToInt32(configuration["SmtpConfig:SmtpPort"]);
+    string smtpUsername = configuration["SmtpConfig:SmtpUsername"];
+    string smtpPassword = configuration["SmtpConfig:SmtpPassword"];
+    bool enableSsl = Convert.ToBoolean(configuration["SmtpConfig:EnableSsl"]);
+
+    var smtpClient = new SmtpClient(smtpServer, smtpPort);
+    smtpClient.EnableSsl = enableSsl;
+    smtpClient.Credentials = new NetworkCredential(smtpUsername, smtpPassword);
+
+    return smtpClient;
+});
 
 builder.Services.AddTransient<IPersona, PersonaServicio>();
 // Add services to the container.
