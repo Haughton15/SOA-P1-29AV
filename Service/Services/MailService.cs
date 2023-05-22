@@ -19,7 +19,7 @@ namespace Service.Services
         private readonly SmtpClient _smtpClient;
         private readonly IPersona _persona;
         private readonly ILogger<MailService> _logger;
-        public MailService(IConfiguration configuration, 
+        public MailService(IConfiguration configuration,
             SmtpClient smtpClient, IPersona persona, ILogger<MailService> logger)
         {
             _smtpClient = smtpClient;
@@ -28,22 +28,23 @@ namespace Service.Services
             _logger = logger;
         }
 
-        
-        public string SedMasiveMail(PostEmailRequest request)
+
+        public string SendMasiveMail(PostEmailRequest request)
         {
             List<EmpleadoVM> list = _persona.GetEmpleados();
             try
             {
                 MailMessage mailMessage = new MailMessage();
-                mailMessage.From = new MailAddress(_configuration["SmtpConfig:SenderEmail"]);
+                mailMessage.From = new MailAddress(_configuration["SmtpConfig:SmtpUsername"]);
                 foreach (var user in list)
                 {
                     mailMessage.To.Add(user.Email.Trim());
+                    Console.WriteLine(user.Email.Trim());
                 }
                 mailMessage.Subject = "Subject of the email";
-                mailMessage.Body = request.Mesagge;
+                mailMessage.Body = request.Message;
+                mailMessage.IsBodyHtml = true;
                 _smtpClient.Send(mailMessage);
-
             }
             catch (Exception e)
             {

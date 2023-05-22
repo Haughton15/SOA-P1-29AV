@@ -10,6 +10,6 @@ namespace Domain.Models.Requests
     public class PostEmailRequest
     {
         [Required, MaxLength(50)]
-        public string Mesagge { get; set; } = string.Empty;
+        public string Message { get; set; } = string.Empty;
     }
 }

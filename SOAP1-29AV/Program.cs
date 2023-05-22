@@ -20,14 +20,17 @@ builder.Services.AddScoped<SmtpClient>(serviceProvider =>
     string smtpPassword = configuration["SmtpConfig:SmtpPassword"];
     bool enableSsl = Convert.ToBoolean(configuration["SmtpConfig:EnableSsl"]);
 
+
     var smtpClient = new SmtpClient(smtpServer, smtpPort);
     smtpClient.EnableSsl = enableSsl;
+    Console.WriteLine(smtpUsername + ":" + smtpPassword);
     smtpClient.Credentials = new NetworkCredential(smtpUsername, smtpPassword);
 
     return smtpClient;
 });
 
 builder.Services.AddTransient<IPersona, PersonaServicio>();
+builder.Services.AddTransient<IEmail, MailService>();
 // Add services to the container.
 
 builder.Services.AddControllers();
