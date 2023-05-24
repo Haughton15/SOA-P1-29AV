@@ -2,6 +2,7 @@
 using Domain.Models.Requests;
 using Microsoft.Extensions.Logging;
 using Service.IServices;
+using BCrypt.Net;
 
 namespace Service.Services
 {
@@ -18,15 +19,20 @@ namespace Service.Services
         public string Login(PostLoginRequest request)
         {
             EmpleadoVM? login =  _persona.GetPerson(request.Email);
+            bool passwordsMatch;
             try
             {
-                    if (login.Email != null)
-                    {
-                        _mensaje = "Login correcto, bienvenido: " + login.Nombre; 
-                    } else
-                    {
-                        _mensaje = "Contraseña o correo incorrectos";
-                    }
+                if (login == null)
+                {
+                    throw new ArgumentNullException("Credenciales incorrectas");
+                }
+                passwordsMatch = BCrypt.Net.BCrypt.Verify(request.Password, login.Password);
+                if (!passwordsMatch)
+                {
+                    throw new ArgumentNullException("Credenciales incorrectas");
+                }
+
+                _mensaje = "Login correcto, bienvenido: " + login.Nombre; 
             }
             catch (Exception e)
             {

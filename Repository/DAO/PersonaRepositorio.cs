@@ -40,9 +40,7 @@ namespace Repository.DAO
         public Empleado GetPerson(string correo)
         {
             Empleado? empleado = new Empleado();
-            Console.WriteLine(correo + " PersonaRepositorio");
             empleado = _context.Empleados.FirstOrDefault(e => e.Correo == correo);
-            Console.WriteLine(empleado + " PersonaRepositorio");
             return empleado;
         }
     }

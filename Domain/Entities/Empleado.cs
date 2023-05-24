@@ -13,7 +13,7 @@ namespace Domain.Entities
         [Required]
         public int NumEmpleado { get; set; }
         public string Correo { get; set; }
-        //public string Password { get; set; }
+        public string Password { get; set; }
         [ForeignKey("Area")]
         public int? IdArea { get; set; }
         public virtual Area Area { get; set; }

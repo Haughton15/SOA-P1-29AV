@@ -3,11 +3,7 @@ using Microsoft.Extensions.Logging;
 using Repository.Context;
 using Repository.DAO;
 using Service.IServices;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace Service.Services
 {
@@ -66,19 +62,19 @@ namespace Service.Services
             EmpleadoVM? empleadoVM = new EmpleadoVM();
             try
             {
-                empleado =  personaRepositorio.GetPerson(correo);
-                Console.WriteLine(correo);
+                empleado = personaRepositorio.GetPerson(correo);
+                if (empleado != null)
+                {
+                    empleadoVM.Email = empleado.Correo;
+                    empleadoVM.Apellidos = empleado.Apellidos;
+                    empleadoVM.Nombre = empleado.Nombre;
+                    empleadoVM.Password = empleado.Password;
+                }
+                Console.WriteLine(correo + " personaservicio");
             }
             catch (Exception e)
             {
                 _logger.LogError(e.Message);
-            }
-
-            if(empleado != null)
-            {
-                empleadoVM.Email = empleado.Correo;
-                empleadoVM.Apellidos = empleado.Apellidos;
-                empleadoVM.Nombre = empleado.Nombre;
             }
 
             return empleadoVM;

@@ -13,6 +13,7 @@ namespace Domain.Entities
         public string Email { get; set; }
         public string NumEmpleado { get; set; }
         public string Area { get; set; }
+        public string Password { get; set; }
 
     }
 }
