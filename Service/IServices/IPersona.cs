@@ -11,5 +11,6 @@ namespace Service.IServices
     {
         List<Persona> ObtenerLista();
         List<EmpleadoVM> GetEmpleados();
+        EmpleadoVM? GetPerson(string correo);
     }
 }

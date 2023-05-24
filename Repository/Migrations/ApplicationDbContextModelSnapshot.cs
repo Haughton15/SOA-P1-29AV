@@ -101,6 +101,10 @@ namespace Repository.Migrations
                     b.Property<int>("NumEmpleado")
                         .HasColumnType("int");
 
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasIndex("IdArea");
 
                     b.ToTable("Personas");

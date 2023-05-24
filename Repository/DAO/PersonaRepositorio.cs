@@ -4,6 +4,7 @@ using Repository.Context;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,11 +21,11 @@ namespace Repository.DAO
         }
         public List<Persona> ObtenerLista()
         {
-            List<Persona> Lista = new List<Persona>();
+            List<Persona> lista = new List<Persona>();
 
-            Lista = _context.Personas.ToList();
+            lista = _context.Personas.ToList();
 
-            return Lista;
+            return lista;
         }
 
         public List<Empleado> GetEmpleados()
@@ -34,6 +35,15 @@ namespace Repository.DAO
             list = _context.Empleados.Include(x => x.Area).ToList();
 
             return list;
+        }
+
+        public Empleado GetPerson(string correo)
+        {
+            Empleado? empleado = new Empleado();
+            Console.WriteLine(correo + " PersonaRepositorio");
+            empleado = _context.Empleados.FirstOrDefault(e => e.Correo == correo);
+            Console.WriteLine(empleado + " PersonaRepositorio");
+            return empleado;
         }
     }
 }

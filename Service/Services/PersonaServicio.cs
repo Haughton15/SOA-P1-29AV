@@ -59,5 +59,30 @@ namespace Service.Services
 
             return empleadoVMs;
         }
+
+        public EmpleadoVM? GetPerson(string correo)
+        {
+            Empleado? empleado = new Empleado();
+            EmpleadoVM? empleadoVM = new EmpleadoVM();
+            try
+            {
+                empleado =  personaRepositorio.GetPerson(correo);
+                Console.WriteLine(correo);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e.Message);
+            }
+
+            if(empleado != null)
+            {
+                empleadoVM.Email = empleado.Correo;
+                empleadoVM.Apellidos = empleado.Apellidos;
+                empleadoVM.Nombre = empleado.Nombre;
+            }
+
+            return empleadoVM;
+        }
+
     }
 }
