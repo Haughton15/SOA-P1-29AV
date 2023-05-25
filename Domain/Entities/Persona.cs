@@ -22,10 +22,13 @@ namespace Domain.Entities
         [StringLength(18)]
         [Required]
         public string CURP { get; set; }
-        [StringLength(13)]
+        [StringLength(50)]
         [Required]
-        public string RFC { get; set; }
+        public string Email { get; set; }
         [DataType(DataType.Date)]
         public DateTime FechaNacimiento { get; set; }
+        [ForeignKey("Empleado")]
+        public int? Id_Empleado { get; set; }
+        public virtual Empleado Empleado { get; set; }
     }
 }

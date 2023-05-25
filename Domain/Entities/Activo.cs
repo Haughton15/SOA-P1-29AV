@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
@@ -8,15 +7,17 @@ using System.Threading.Tasks;
 
 namespace Domain.Entities
 {
-    [Table("Areas")]
-    public class Area
+    public class Activo
     {
         [Key]
         public int Id { get; set; }
+        [StringLength(50)]
         [Required]
         public string Nombre { get; set; }
-        public string Descripción { get; set; }
-        public virtual ICollection<Empleado> Empleados { get; set; }
-
+        [StringLength(50)]
+        [Required]
+        public string Descripcion { get; set; }
+        [Required]
+        public bool Estatus { get; set; }
     }
 }

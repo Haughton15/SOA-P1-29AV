@@ -29,7 +29,7 @@ namespace Service.Services
         }
 
 
-        public string SendMasiveMail(PostEmailRequest request)
+        /*public string SendMasiveMail(PostEmailRequest request)
         {
             List<EmpleadoVM> list = _persona.GetEmpleados();
             try
@@ -51,6 +51,6 @@ namespace Service.Services
                 _logger.LogError(e.Message);
             }
             return "Se he enviado los correos exitosamente";
-        }
+        }*/
     }
 }

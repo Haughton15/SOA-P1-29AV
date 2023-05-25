@@ -8,14 +8,15 @@ using System.Threading.Tasks;
 
 namespace Domain.Entities
 {
-    public class Empleado : Persona
+    public class Empleado 
     {
+        [Key]
+        public int IdEmpleado { get; set; }
         [Required]
         public int NumEmpleado { get; set; }
-        public string Correo { get; set; }
-        public string Password { get; set; }
-        [ForeignKey("Area")]
-        public int? IdArea { get; set; }
-        public virtual Area Area { get; set; }
+        [Required]
+        public bool Estatus { get; set; }
+        [DataType(DataType.Date)]
+        public DateTime FechaIngreso { get; set; }
     }
 }

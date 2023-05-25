@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Repository.Context;
 
@@ -11,9 +12,11 @@ using Repository.Context;
 namespace Repository.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230525141036_25-05-2023")]
+    partial class _25052023
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -128,17 +131,12 @@ namespace Repository.Migrations
                     b.Property<DateTime>("FechaNacimiento")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("Id_Empleado")
-                        .HasColumnType("int");
-
                     b.Property<string>("Nombre")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("Id_Empleado");
 
                     b.ToTable("Personas");
                 });
@@ -154,15 +152,6 @@ namespace Repository.Migrations
                         .HasForeignKey("IdEmpleado");
 
                     b.Navigation("Activo");
-
-                    b.Navigation("Empleado");
-                });
-
-            modelBuilder.Entity("Domain.Entities.Persona", b =>
-                {
-                    b.HasOne("Domain.Entities.Empleado", "Empleado")
-                        .WithMany()
-                        .HasForeignKey("Id_Empleado");
 
                     b.Navigation("Empleado");
                 });

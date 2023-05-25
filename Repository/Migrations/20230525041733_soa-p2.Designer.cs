@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Repository.Context;
 
@@ -11,9 +12,11 @@ using Repository.Context;
 namespace Repository.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230525041733_soa-p2")]
+    partial class soap2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -80,28 +83,6 @@ namespace Repository.Migrations
                     b.ToTable("ActivosEmpleados");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Empleado", b =>
-                {
-                    b.Property<int>("IdEmpleado")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdEmpleado"));
-
-                    b.Property<bool>("Estatus")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime>("FechaIngreso")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("NumEmpleado")
-                        .HasColumnType("int");
-
-                    b.HasKey("IdEmpleado");
-
-                    b.ToTable("Empleados");
-                });
-
             modelBuilder.Entity("Domain.Entities.Persona", b =>
                 {
                     b.Property<int>("Id")
@@ -120,6 +101,10 @@ namespace Repository.Migrations
                         .HasMaxLength(18)
                         .HasColumnType("nvarchar(18)");
 
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -128,9 +113,6 @@ namespace Repository.Migrations
                     b.Property<DateTime>("FechaNacimiento")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("Id_Empleado")
-                        .HasColumnType("int");
-
                     b.Property<string>("Nombre")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -138,9 +120,29 @@ namespace Repository.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Id_Empleado");
+                    b.ToTable("Personas");
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("Persona");
+
+                    b.UseTphMappingStrategy();
+                });
+
+            modelBuilder.Entity("Domain.Entities.Empleado", b =>
+                {
+                    b.HasBaseType("Domain.Entities.Persona");
+
+                    b.Property<bool>("Estatus")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("FechaIngreso")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("NumEmpleado")
+                        .HasColumnType("int");
 
                     b.ToTable("Personas");
+
+                    b.HasDiscriminator().HasValue("Empleado");
                 });
 
             modelBuilder.Entity("Domain.Entities.ActivoEmpleado", b =>
@@ -154,15 +156,6 @@ namespace Repository.Migrations
                         .HasForeignKey("IdEmpleado");
 
                     b.Navigation("Activo");
-
-                    b.Navigation("Empleado");
-                });
-
-            modelBuilder.Entity("Domain.Entities.Persona", b =>
-                {
-                    b.HasOne("Domain.Entities.Empleado", "Empleado")
-                        .WithMany()
-                        .HasForeignKey("Id_Empleado");
 
                     b.Navigation("Empleado");
                 });

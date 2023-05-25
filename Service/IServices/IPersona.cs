@@ -1,4 +1,5 @@
 ﻿using Domain.Entities;
+using Domain.Models.Requests;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,7 @@ namespace Service.IServices
     {
         List<Persona> ObtenerLista();
         List<EmpleadoVM> GetEmpleados();
-        EmpleadoVM? GetPerson(string correo);
+        Empleado RegisterEmpleado(PostEmpleadoRequest request);
+        //EmpleadoVM? GetPerson(string correo);
     }
 }

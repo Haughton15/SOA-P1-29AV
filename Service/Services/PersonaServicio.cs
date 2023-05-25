@@ -1,4 +1,5 @@
 ﻿using Domain.Entities;
+using Domain.Models.Requests;
 using Microsoft.Extensions.Logging;
 using Repository.Context;
 using Repository.DAO;
@@ -39,13 +40,11 @@ namespace Service.Services
             List<EmpleadoVM> empleadoVMs = new List<EmpleadoVM>();
             try
             {
-                empleadoVMs = personaRepositorio.GetEmpleados().Select(x => new EmpleadoVM()
+                empleadoVMs = personaRepositorio.ObtenerLista().Select(x => new EmpleadoVM()
                 {
+                    ID = x.Empleado.IdEmpleado,
                     Nombre = x.Nombre,
-                    Apellidos = x.Apellidos,
-                    Area = x.Area.Nombre,
-                    Email = x.Correo,
-                    NumEmpleado = x.NumEmpleado.ToString()
+                    Apellidos = x.Apellidos
                 }).ToList();
             }
             catch (Exception e)
@@ -56,29 +55,33 @@ namespace Service.Services
             return empleadoVMs;
         }
 
-        public EmpleadoVM? GetPerson(string correo)
+        public Empleado RegisterEmpleado(PostEmpleadoRequest request)
         {
-            Empleado? empleado = new Empleado();
-            EmpleadoVM? empleadoVM = new EmpleadoVM();
-            try
-            {
-                empleado = personaRepositorio.GetPerson(correo);
-                if (empleado != null)
-                {
-                    empleadoVM.Email = empleado.Correo;
-                    empleadoVM.Apellidos = empleado.Apellidos;
-                    empleadoVM.Nombre = empleado.Nombre;
-                    empleadoVM.Password = empleado.Password;
-                }
-                Console.WriteLine(correo + " personaservicio");
-            }
-            catch (Exception e)
-            {
-                _logger.LogError(e.Message);
-            }
-
-            return empleadoVM;
+            var response = personaRepositorio.RegisterEmpleado(request);
+            return response;
         }
+
+        /*public EmpleadoVM? GetPerson(string correo)
+         {
+             Empleado? empleado = new Empleado();
+             EmpleadoVM? empleadoVM = new EmpleadoVM();
+             try
+             {
+                 empleado = personaRepositorio.GetPerson(correo);
+                 if (empleado != null)
+                 {
+                     empleadoVM.Apellidos = empleado.;
+                     empleadoVM.Nombre = empleado.Nombre;
+                 }
+                 Console.WriteLine(correo + " personaservicio");
+             }
+             catch (Exception e)
+             {
+                 _logger.LogError(e.Message);
+             }
+
+             return empleadoVM;
+         }*/
 
     }
 }

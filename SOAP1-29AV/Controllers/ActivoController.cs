@@ -9,19 +9,19 @@ namespace SOAP1_29AV.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class LoginController : Controller
+    public class ActivoController : Controller
     {
-        private readonly ILogin _loginService;
-        public LoginController(ILogin login)
+        private readonly IActivo _activoService;
+        public ActivoController(IActivo activo)
         {
-            _loginService = login;
+            _activoService = activo;
         }
 
         [HttpPost]
         [SwaggerResponse((int)HttpStatusCode.Created)]
-        public Task<IActionResult> PostILogin([FromBody] PostLoginRequest request)
+        public ActionResult<Activo> PostActivo([FromBody] PostActivoRequest request)
         {
-            return Task.FromResult<IActionResult>(Ok(_loginService.Login(request)));
+            return Ok(_activoService.RegisterActivo(request));
         }
     }
 }
