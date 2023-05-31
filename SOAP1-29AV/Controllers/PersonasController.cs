@@ -1,4 +1,6 @@
-﻿using Domain.Models.Requests;
+﻿using Azure;
+using Domain.Entities;
+using Domain.Models.Requests;
 using Microsoft.AspNetCore.Mvc;
 using Service.IServices;
 using Swashbuckle.AspNetCore.Annotations;
@@ -21,8 +23,20 @@ namespace SOAP1_29AV.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            /*return Ok(_persona.GetEmpleados());*/
-            return Ok();
+            return Ok(_persona.GetEmpleados());
+        }
+
+        [HttpGet("{id}")]
+        [SwaggerResponse((int)HttpStatusCode.OK)]
+        [SwaggerResponse((int)HttpStatusCode.NotFound)]
+        public ActionResult<ActivoEmpleadoVM> GetPerson(int id)
+        {
+            var response = _persona.GetPerson(id);
+            if (response == null)
+            {
+                return NotFound();
+            }
+            return response;
         }
 
         [HttpPost]

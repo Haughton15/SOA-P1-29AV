@@ -61,27 +61,21 @@ namespace Service.Services
             return response;
         }
 
-        /*public EmpleadoVM? GetPerson(string correo)
+        public ActivoEmpleadoVM? GetPerson(int id)
          {
-             Empleado? empleado = new Empleado();
-             EmpleadoVM? empleadoVM = new EmpleadoVM();
+            ActivoEmpleadoVM activoEmpleadoVM = new ActivoEmpleadoVM();
              try
              {
-                 empleado = personaRepositorio.GetPerson(correo);
-                 if (empleado != null)
-                 {
-                     empleadoVM.Apellidos = empleado.;
-                     empleadoVM.Nombre = empleado.Nombre;
-                 }
-                 Console.WriteLine(correo + " personaservicio");
+                activoEmpleadoVM = personaRepositorio.GetPerson(id);
+                 //Console.WriteLine(correo + " personaservicio");
              }
              catch (Exception e)
              {
                  _logger.LogError(e.Message);
              }
 
-             return empleadoVM;
-         }*/
+             return activoEmpleadoVM;
+         }
 
     }
 }

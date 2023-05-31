@@ -5,12 +5,17 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace Domain.Entities
 {
+    [Table("Empleados")]
     public class Empleado 
     {
+        public readonly object ActivoEmpleado;
+
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int IdEmpleado { get; set; }
         [Required]
         public int NumEmpleado { get; set; }
@@ -18,5 +23,7 @@ namespace Domain.Entities
         public bool Estatus { get; set; }
         [DataType(DataType.Date)]
         public DateTime FechaIngreso { get; set; }
+
+        //public ICollection<ActivoEmpleado> ActivoEmpleados { get; set; } 
     }
 }

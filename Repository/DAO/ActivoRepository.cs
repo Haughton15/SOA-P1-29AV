@@ -22,24 +22,13 @@ namespace Repository.DAO
         {
             List<Activo> lista = new List<Activo>();
 
-            lista = _context.Activos.ToList();
+            lista = _context.Activos.Where(x => x.Estatus != true).ToList();
 
             return lista;
         }
 
         public Activo RegisterActivo(PostActivoRequest request)
         {
-
-            /*
-                var newProduct = new Product
-                {
-                    Name = "Nuevo producto",
-                    Price = 9.99m
-                };
-
-                context.Products.Add(newProduct);
-                context.SaveChanges();
-            */
             Activo response = new Activo
             {
                 Nombre = request.Nombre,

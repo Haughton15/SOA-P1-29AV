@@ -31,7 +31,8 @@ builder.Services.AddScoped<SmtpClient>(serviceProvider =>
 
 builder.Services.AddTransient<IPersona, PersonaServicio>();
 builder.Services.AddTransient<IEmail, MailService>();
-builder.Services.AddScoped<IActivo, ActivoService>();
+builder.Services.AddTransient<IActivo, ActivoService>();
+builder.Services.AddTransient<IActivoEmpleado, ActivoEmpleadoService>();
 // Add services to the container.
 
 builder.Services.AddControllers();

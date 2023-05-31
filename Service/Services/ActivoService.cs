@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using Repository.DAO;
 using Service.IServices;
 using Repository.Context;
+using Azure.Core;
 
 namespace Service.Services
 {
@@ -20,7 +21,8 @@ namespace Service.Services
         }
         public List<Activo> GetActivosDisponibles()
         {
-            throw new NotImplementedException();
+            var response = activoRepository.GetActivos();
+            return response;
         }
 
         public Activo RegisterActivo(PostActivoRequest request)

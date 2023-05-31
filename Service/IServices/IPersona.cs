@@ -13,6 +13,6 @@ namespace Service.IServices
         List<Persona> ObtenerLista();
         List<EmpleadoVM> GetEmpleados();
         Empleado RegisterEmpleado(PostEmpleadoRequest request);
-        //EmpleadoVM? GetPerson(string correo);
+        ActivoEmpleadoVM? GetPerson(int  id);
     }
 }

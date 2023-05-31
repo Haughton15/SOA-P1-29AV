@@ -17,7 +17,13 @@ namespace SOAP1_29AV.Controllers
             _activoService = activo;
         }
 
-        [HttpPost]
+        [HttpGet]
+        public IActionResult Index()
+        {
+            return Ok(_activoService.GetActivosDisponibles());
+        }
+
+            [HttpPost]
         [SwaggerResponse((int)HttpStatusCode.Created)]
         public ActionResult<Activo> PostActivo([FromBody] PostActivoRequest request)
         {

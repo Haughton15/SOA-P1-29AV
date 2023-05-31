@@ -45,7 +45,7 @@ namespace Repository.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Activos");
+                    b.ToTable("Activos", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.ActivoEmpleado", b =>
@@ -77,7 +77,7 @@ namespace Repository.Migrations
 
                     b.HasIndex("IdEmpleado");
 
-                    b.ToTable("ActivosEmpleados");
+                    b.ToTable("ActivosEmpleados", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.Empleado", b =>
@@ -99,7 +99,7 @@ namespace Repository.Migrations
 
                     b.HasKey("IdEmpleado");
 
-                    b.ToTable("Empleados");
+                    b.ToTable("Empleados", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.Persona", b =>
@@ -140,7 +140,7 @@ namespace Repository.Migrations
 
                     b.HasIndex("Id_Empleado");
 
-                    b.ToTable("Personas");
+                    b.ToTable("Personas", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.ActivoEmpleado", b =>

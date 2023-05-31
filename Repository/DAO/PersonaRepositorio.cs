@@ -1,15 +1,9 @@
-﻿using Domain.Entities;
+﻿using Azure.Core;
+using Domain.Entities;
 using Domain.Models.Requests;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Repository.Context;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace Repository.DAO
 {
     public class PersonaRepositorio
@@ -38,11 +32,28 @@ namespace Repository.DAO
             return list;
         }
 
-        public Empleado GetPerson(string correo)
+        public ActivoEmpleadoVM GetPerson(int id)
         {
-            Empleado? empleado = new Empleado();
-            empleado = _context.Empleados.Where(e => e.NumEmpleado == 1).FirstOrDefault();
-            return empleado;
+            Persona? persona = new Persona();
+            persona = _context.Personas.Include(x => x.Empleado)
+                                       .FirstOrDefault(e => e.Id_Empleado == id);
+
+            ActivoEmpleado activoEmpleado = new ActivoEmpleado();
+            activoEmpleado = _context.ActivosEmpleados.FirstOrDefault(x => x.IdEmpleado == id);
+
+            Activo activo = new Activo();
+            activo = _context.Activos.FirstOrDefault(x => x.Id == activoEmpleado.IdActivo);
+            ActivoEmpleadoVM activoEmpleadoVM = new ActivoEmpleadoVM
+            {
+                IdEmpleado = (int)persona.Id_Empleado,
+                NombreEmpleado = persona.Nombre,
+                ApellidosEmpleado = persona.Apellidos,
+                NumEmp = persona.Empleado.NumEmpleado, 
+                //Activo = activo,
+                activoEmpleado = activoEmpleado
+            };
+            
+            return activoEmpleadoVM;
         }
 
         public Empleado RegisterEmpleado(PostEmpleadoRequest request)
@@ -59,7 +70,7 @@ namespace Repository.DAO
             _context.SaveChanges();
             Console.WriteLine("Save empleado");
             //Cambiar el siguiente a el ultimo guardado
-            empleado = _context.Empleados.Where(e => e.NumEmpleado == request.NumEmp).FirstOrDefault();
+            empleado = _context.Empleados.OrderByDescending(e => e.IdEmpleado).FirstOrDefault();
 
             Persona persona = new Persona
             {
