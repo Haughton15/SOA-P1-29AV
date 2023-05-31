@@ -43,7 +43,11 @@ namespace SOAP1_29AV.Controllers
         [SwaggerResponse((int)HttpStatusCode.Created)]
         public IActionResult PostEmpleados([FromBody] PostEmpleadoRequest request)
         {
-            return Ok(_persona.RegisterEmpleado(request));
+            var response = _persona.RegisterEmpleado(request);
+            if(response  == null)
+                return BadRequest();
+            
+            return Ok("Usuario creado con exito");
         }
     }
 }

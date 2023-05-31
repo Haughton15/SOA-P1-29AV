@@ -47,6 +47,7 @@ namespace Repository.DAO
                 NombreEmpleado = persona.Nombre,
                 ApellidosEmpleado = persona.Apellidos,
                 NumEmp = persona.Empleado.NumEmpleado, 
+                Email = persona.Email,
                 //Activo = activo,
                 activoEmpleado = activoEmpleado
             };

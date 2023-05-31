@@ -29,7 +29,7 @@ namespace Service.Services
         }
 
 
-        public string SendMasiveMail()
+        public string SendMasiveMail(PostEmailRequest message)
         {
             List<ActivoEmpleado> list = _activoEmpleado.GetActivosEmpleadosEntrega();
             try
@@ -41,11 +41,11 @@ namespace Service.Services
                 {
                     if(user.FechaEntrega == twoDaysLater)
                     {
-                        //mailMessage.To.Add(user.Empleado);
+                        //mailMessage.To.Add(user.persona.Email);
                     }
                 }
                 mailMessage.Subject = "Subject of the email";
-                mailMessage.Body = "Tiene que devolver el activo ";
+                mailMessage.Body = "La entrega de su activo es dentro de 2 dias";
                 mailMessage.IsBodyHtml = true;
                 _smtpClient.Send(mailMessage);
             }

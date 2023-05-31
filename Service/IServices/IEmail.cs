@@ -9,6 +9,6 @@ namespace Service.IServices
 {
     public interface IEmail
     {
-        public string SendMasiveMail();
+        public string SendMasiveMail(PostEmailRequest message);
     }
 }

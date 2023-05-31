@@ -11,6 +11,7 @@ namespace Domain.Entities
     [Table("ActivosEmpleados")]
     public class ActivoEmpleado
     {
+
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }

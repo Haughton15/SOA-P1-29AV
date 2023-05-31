@@ -76,11 +76,10 @@ namespace Repository.DAO
 
         public List<ActivoEmpleado> GetActivosEmpleadosEntrega()
         {
-            List<ActivoEmpleado> list = new List<ActivoEmpleado>();
 
-            list = _context.ActivosEmpleados.ToList();
+            List<ActivoEmpleado> activoEmpleados = new List<ActivoEmpleado>();
 
-            return list;
+            return activoEmpleados;
         }
     }
 }

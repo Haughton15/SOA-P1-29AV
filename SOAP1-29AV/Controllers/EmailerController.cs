@@ -21,8 +21,7 @@ namespace SOAP1_29AV.Controllers
         [SwaggerResponse((int)HttpStatusCode.Created)]
         public IActionResult PostIMail([FromBody] PostEmailRequest request)
         {
-            /*return Ok(_mailService.SendMasiveMail(request));*/
-            return Ok();
+            return Ok(_mailService.SendMasiveMail(request));
         }
     }
 }
