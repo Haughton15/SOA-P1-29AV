@@ -41,8 +41,6 @@ namespace Repository.DAO
             ActivoEmpleado activoEmpleado = new ActivoEmpleado();
             activoEmpleado = _context.ActivosEmpleados.FirstOrDefault(x => x.IdEmpleado == id);
 
-            Activo activo = new Activo();
-            activo = _context.Activos.FirstOrDefault(x => x.Id == activoEmpleado.IdActivo);
             ActivoEmpleadoVM activoEmpleadoVM = new ActivoEmpleadoVM
             {
                 IdEmpleado = (int)persona.Id_Empleado,
@@ -62,8 +60,8 @@ namespace Repository.DAO
             Empleado empleado = new Empleado
             {
                 NumEmpleado = request.NumEmp,
-                Estatus = request.Estatus,
-                FechaIngreso = request.FechaIngreso
+                Estatus = true,
+                FechaIngreso = DateTime.Today
             };
             Console.WriteLine("Register empleado");
             _context.Empleados.Add(empleado);

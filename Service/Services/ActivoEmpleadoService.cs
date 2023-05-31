@@ -50,5 +50,11 @@ namespace Service.Services
             var response = activoEmpleadoRepository.PatchActivoEmpleado(id, request);
             return response;
         }
+
+        public List<ActivoEmpleado> GetActivosEmpleadosEntrega()
+        {
+            var response = activoEmpleadoRepository.GetActivosEmpleadosEntrega();
+            return response;
+        }
     }
 }

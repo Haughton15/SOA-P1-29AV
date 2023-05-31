@@ -73,5 +73,14 @@ namespace Repository.DAO
             _context.SaveChanges();
             return entity;
         }
+
+        public List<ActivoEmpleado> GetActivosEmpleadosEntrega()
+        {
+            List<ActivoEmpleado> list = new List<ActivoEmpleado>();
+
+            list = _context.ActivosEmpleados.ToList();
+
+            return list;
+        }
     }
 }

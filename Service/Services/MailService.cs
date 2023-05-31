@@ -17,32 +17,35 @@ namespace Service.Services
     {
         private readonly IConfiguration _configuration;
         private readonly SmtpClient _smtpClient;
-        private readonly IPersona _persona;
+        private readonly IActivoEmpleado _activoEmpleado;
         private readonly ILogger<MailService> _logger;
         public MailService(IConfiguration configuration,
-            SmtpClient smtpClient, IPersona persona, ILogger<MailService> logger)
+            SmtpClient smtpClient, IActivoEmpleado activoEmpleado, ILogger<MailService> logger)
         {
             _smtpClient = smtpClient;
             _configuration = configuration;
-            _persona = persona;
+            _activoEmpleado = activoEmpleado;
             _logger = logger;
         }
 
 
-        /*public string SendMasiveMail(PostEmailRequest request)
+        public string SendMasiveMail()
         {
-            List<EmpleadoVM> list = _persona.GetEmpleados();
+            List<ActivoEmpleado> list = _activoEmpleado.GetActivosEmpleadosEntrega();
             try
             {
                 MailMessage mailMessage = new MailMessage();
                 mailMessage.From = new MailAddress(_configuration["SmtpConfig:SmtpUsername"]);
+                DateTime twoDaysLater = DateTime.Now.AddDays(2);
                 foreach (var user in list)
                 {
-                    mailMessage.To.Add(user.Email.Trim());
-                    Console.WriteLine(user.Email.Trim());
+                    if(user.FechaEntrega == twoDaysLater)
+                    {
+                        //mailMessage.To.Add(user.Empleado);
+                    }
                 }
                 mailMessage.Subject = "Subject of the email";
-                mailMessage.Body = request.Message;
+                mailMessage.Body = "Tiene que devolver el activo ";
                 mailMessage.IsBodyHtml = true;
                 _smtpClient.Send(mailMessage);
             }
@@ -51,6 +54,6 @@ namespace Service.Services
                 _logger.LogError(e.Message);
             }
             return "Se he enviado los correos exitosamente";
-        }*/
+        }
     }
 }

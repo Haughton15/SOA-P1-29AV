@@ -14,6 +14,7 @@ namespace Service.IServices
 
         bool DeleteActivoEmpleado(int id);
         ActivoEmpleado GetActivoEmpleado(int id);
+        List<ActivoEmpleado> GetActivosEmpleadosEntrega();
 
         ActivoEmpleado PatchActivoEmpleado(int id,  PatchActivoEmpleado request);
     }

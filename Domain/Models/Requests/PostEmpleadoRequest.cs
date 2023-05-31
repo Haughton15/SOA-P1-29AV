@@ -12,11 +12,11 @@ namespace Domain.Models.Requests
         //Empleados
         [Required(ErrorMessage = "El campo numEmp es requerido")]
         public int NumEmp { get; set; }
-        [Required(ErrorMessage = "El campo estatus es requerido")]
+        /*[Required(ErrorMessage = "El campo estatus es requerido")]
         public bool Estatus { get; set; }
         [Required(ErrorMessage = "El campo fecha de ingreso es requerido")]
         [DataType(DataType.Date)]
-        public DateTime FechaIngreso { get; set; }
+        public DateTime FechaIngreso { get; set; }*/
 
         //Persona 
         [Required(ErrorMessage = "El campo nombre es requerido"),
