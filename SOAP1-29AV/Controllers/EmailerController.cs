@@ -1,6 +1,4 @@
-﻿using Domain.Entities;
-using Domain.Models.Requests;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Service.IServices;
 using Swashbuckle.AspNetCore.Annotations;
 using System.Net;
@@ -17,11 +15,11 @@ namespace SOAP1_29AV.Controllers
             _mailService = mail;
         }
 
-        [HttpPost]
+        [HttpGet]
         [SwaggerResponse((int)HttpStatusCode.Created)]
-        public IActionResult PostIMail([FromBody] PostEmailRequest request)
+        public IActionResult SendMail()
         {
-            return Ok(_mailService.SendMasiveMail(request));
+            return Ok(_mailService.SendMasiveMail());
         }
     }
 }

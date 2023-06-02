@@ -35,6 +35,10 @@ builder.Services.AddTransient<IActivo, ActivoService>();
 builder.Services.AddTransient<IActivoEmpleado, ActivoEmpleadoService>();
 // Add services to the container.
 
+builder.Services.AddHttpClient();
+builder.Services.AddHostedService<TareaRecurrente>();
+
+
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

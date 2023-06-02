@@ -20,7 +20,12 @@ namespace SOAP1_29AV.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            return Ok(_activoService.GetActivosDisponibles());
+            List<Activo> activo = new List<Activo>();
+            activo = _activoService.GetActivosDisponibles();
+            /*if (activo == null)
+                throw new ArgumentNullException("No hay ningun activo");*/
+
+            return Ok(activo);
         }
 
             [HttpPost]

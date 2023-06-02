@@ -29,7 +29,7 @@ namespace Service.Services
         }
 
 
-        public string SendMasiveMail(PostEmailRequest message)
+        public string SendMasiveMail()
         {
             List<ActivoEmpleado> list = _activoEmpleado.GetActivosEmpleadosEntrega();
             try
@@ -39,12 +39,15 @@ namespace Service.Services
                 DateTime twoDaysLater = DateTime.Now.AddDays(2);
                 foreach (var user in list)
                 {
-                    if(user.FechaEntrega == twoDaysLater)
+                    if(user.FechaEntrega.Date == twoDaysLater.Date)
                     {
-                        mailMessage.To.Add(user.Empleado.Persona.Email);
+                        Console.WriteLine(user.FechaEntrega.Date);
+                        Console.WriteLine(twoDaysLater.Date);
+                        mailMessage.To.Add(user.Empleado.Persona.Email.Trim());
+                        Console.WriteLine(user.Empleado.Persona.Email.Trim());
                     }
                 }
-                mailMessage.Subject = "Subject of+ the email";
+                mailMessage.Subject = "Subject of the email";
                 mailMessage.Body = "La entrega de su activo es dentro de 2 dias";
                 mailMessage.IsBodyHtml = true;
                 _smtpClient.Send(mailMessage);
@@ -53,7 +56,7 @@ namespace Service.Services
             {
                 _logger.LogError(e.Message);
             }
-            return "Se he enviado los correos exitosamente";
+            return "Se he enviado los correos exitosamente: ";
         }
     }
 }

@@ -4,6 +4,8 @@ using Domain.Models.Requests;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Repository.Context;
+using System.Data;
+
 namespace Repository.DAO
 {
     public class PersonaRepositorio
@@ -57,6 +59,10 @@ namespace Repository.DAO
 
         public Empleado RegisterEmpleado(PostEmpleadoRequest request)
         {
+            Empleado empleadoVal = new Empleado();
+            empleadoVal = _context.Empleados.FirstOrDefault(e => e.NumEmpleado == request.NumEmp);
+            if (empleadoVal != null)
+                throw new Exception("Dato repetido");
 
             Empleado empleado = new Empleado
             {

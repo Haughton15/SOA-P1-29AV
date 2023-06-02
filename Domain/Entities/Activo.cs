@@ -23,6 +23,11 @@ namespace Domain.Entities
         [Required]
         public bool Estatus { get; set; }
 
+        public static implicit operator List<object>(Activo v)
+        {
+            throw new NotImplementedException();
+        }
+
         //public ICollection<ActivoEmpleado> ActivoEmpleados { get; set; }
     }
 }

@@ -12,8 +12,7 @@ namespace Domain.Entities
     [Table("Empleados")]
     public class Empleado 
     {
-        public readonly object ActivoEmpleado;
-        public Persona Persona;
+        public Persona Persona { get; set; }
 
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
