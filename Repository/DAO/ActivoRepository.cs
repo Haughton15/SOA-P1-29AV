@@ -33,7 +33,7 @@ namespace Repository.DAO
             {
                 Nombre = request.Nombre,
                 Descripcion = request.Descripcion,
-                Estatus = request.Estatus
+                Estatus = false
             };
             _context.Activos.Add(response);
             _context.SaveChanges();

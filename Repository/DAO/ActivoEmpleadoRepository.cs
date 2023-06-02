@@ -1,4 +1,5 @@
-﻿using Domain.Entities;
+﻿using Azure.Core;
+using Domain.Entities;
 using Domain.Models.Requests;
 using Microsoft.EntityFrameworkCore;
 using Repository.Context;
@@ -35,6 +36,8 @@ namespace Repository.DAO
             ActivoEmpleado? activoEmpleado = new ActivoEmpleado();
             activoEmpleado = _context.ActivosEmpleados.FirstOrDefault(e => e.Id == id);   
             _context.ActivosEmpleados.Remove(activoEmpleado);
+            Activo activo = _context.Activos.FirstOrDefault(e => e.Id == request.id_activo);
+            activo.Estatus = false;
             _context.SaveChanges();
             return true;
         }
@@ -51,6 +54,10 @@ namespace Repository.DAO
                 FechaEntrega = request.FechaEntrega,
                 FechaLiberacion = request.FechaLiberacion
             };
+
+            Activo activo = _context.Activos.FirstOrDefault(e => e.Id == request.id_activo);
+            activo.Estatus = true;
+
             Console.WriteLine("Register empleado");
             _context.ActivosEmpleados.Add(activoEmpleado);
             _context.SaveChanges();
@@ -78,6 +85,7 @@ namespace Repository.DAO
         {
 
             List<ActivoEmpleado> activoEmpleados = new List<ActivoEmpleado>();
+            activoEmpleados = _context.ActivosEmpleados.Include(x => x.Empleado).ThenInclude(y => y.Persona).ToList();
 
             return activoEmpleados;
         }

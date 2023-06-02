@@ -41,10 +41,10 @@ namespace Service.Services
                 {
                     if(user.FechaEntrega == twoDaysLater)
                     {
-                        //mailMessage.To.Add(user.persona.Email);
+                        mailMessage.To.Add(user.Empleado.Persona.Email);
                     }
                 }
-                mailMessage.Subject = "Subject of the email";
+                mailMessage.Subject = "Subject of+ the email";
                 mailMessage.Body = "La entrega de su activo es dentro de 2 dias";
                 mailMessage.IsBodyHtml = true;
                 _smtpClient.Send(mailMessage);

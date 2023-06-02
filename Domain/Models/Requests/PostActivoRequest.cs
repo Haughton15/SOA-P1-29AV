@@ -15,7 +15,5 @@ namespace Domain.Models.Requests
         [Required(ErrorMessage = "El campo descripcion es requerido"),
          MaxLength(50, ErrorMessage = "La descripcion tiene que ser menor a 50 caracteres")]
         public string Descripcion { get; set; } = string.Empty;
-        [Required(ErrorMessage = "El campo estatus es requerido")]
-        public bool Estatus { get; set; }
     }
 }
