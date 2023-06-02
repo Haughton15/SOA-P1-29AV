@@ -34,10 +34,11 @@ namespace Repository.DAO
                 return false;
             }
             ActivoEmpleado? activoEmpleado = new ActivoEmpleado();
-            activoEmpleado = _context.ActivosEmpleados.FirstOrDefault(e => e.Id == id);   
-            _context.ActivosEmpleados.Remove(activoEmpleado);
-            Activo activo = _context.Activos.FirstOrDefault(e => e.Id == request.id_activo);
+            activoEmpleado = _context.ActivosEmpleados.FirstOrDefault(e => e.Id == id);
+
+            Activo activo = _context.Activos.FirstOrDefault(e => e.Id == activoEmpleado.IdActivo);
             activo.Estatus = false;
+            _context.ActivosEmpleados.Remove(activoEmpleado);
             _context.SaveChanges();
             return true;
         }
