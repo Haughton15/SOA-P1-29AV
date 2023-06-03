@@ -46,8 +46,7 @@ public class TareaRecurrente : BackgroundService
                     Console.WriteLine("Envio de correos incorrecto papu");
                 }
             }
-
-            await Task.Delay(TimeSpan.FromMinutes(50), stoppingToken); 
+            await Task.Delay(TimeSpan.FromMinutes(5), stoppingToken); 
         }
     }
 }

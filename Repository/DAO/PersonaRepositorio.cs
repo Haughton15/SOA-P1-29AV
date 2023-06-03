@@ -34,27 +34,23 @@ namespace Repository.DAO
             return list;
         }
 
-        public ActivoEmpleadoVM GetPerson(int id)
+        public Persona GetPerson(int id)
         {
             Persona? persona = new Persona();
             persona = _context.Personas.Include(x => x.Empleado)
-                                       .FirstOrDefault(e => e.Id_Empleado == id);
+                                        .ThenInclude(y => y.ActivoEmpleado)
+                                        .ThenInclude(xy => xy.Activo)
+                                        .FirstOrDefault(e => e.Id_Empleado == id);
 
-            ActivoEmpleado activoEmpleado = new ActivoEmpleado();
-            activoEmpleado = _context.ActivosEmpleados.FirstOrDefault(x => x.IdEmpleado == id);
+            if(persona.Empleado.Persona != null)
+            persona.Empleado.Persona = null;
 
-            ActivoEmpleadoVM activoEmpleadoVM = new ActivoEmpleadoVM
+            if(persona.Empleado.ActivoEmpleado != null)
             {
-                IdEmpleado = (int)persona.Id_Empleado,
-                NombreEmpleado = persona.Nombre,
-                ApellidosEmpleado = persona.Apellidos,
-                NumEmp = persona.Empleado.NumEmpleado, 
-                Email = persona.Email,
-                //Activo = activo,
-                activoEmpleado = activoEmpleado
-            };
+                persona.Empleado.ActivoEmpleado.Empleado = null;
+            }
             
-            return activoEmpleadoVM;
+            return persona;
         }
 
         public Empleado RegisterEmpleado(PostEmpleadoRequest request)

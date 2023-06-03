@@ -13,6 +13,7 @@ namespace Domain.Entities
     public class Empleado 
     {
         public Persona Persona { get; set; }
+        public ActivoEmpleado ActivoEmpleado { get; set; }
 
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
