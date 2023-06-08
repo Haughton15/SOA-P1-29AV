@@ -26,6 +26,9 @@ namespace Domain.Entities
         [StringLength(50)]
         [Required]
         public string Email { get; set; }
+        [StringLength(50)]
+        [Required]
+        public string Password { get; set; }
         [DataType(DataType.Date)]
         public DateTime FechaNacimiento { get; set; }
         [ForeignKey("Empleado")]

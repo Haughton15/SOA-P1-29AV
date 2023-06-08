@@ -1,4 +1,5 @@
-﻿using Domain.Entities;
+﻿using Azure.Core;
+using Domain.Entities;
 using Domain.Models.Requests;
 using Microsoft.Extensions.Logging;
 using Repository.Context;
@@ -107,5 +108,42 @@ namespace Service.Services
             return activoEmpleadoVM;
          }
 
+        public Persona PatchPersona(int id, PatchPersonaRequest request)
+        {
+            Persona response = new Persona();
+            try
+            {
+                var activoEmpleadoExist = GetPerson(id);
+                if (activoEmpleadoExist != null)
+                    throw new DirectoryNotFoundException("No se encontro ninguna persona con ese Id");
+
+                response = personaRepositorio.PatchPersona(id, request);
+
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e.Message);
+            }
+            return response;
+        }
+
+        public bool DeletePerson(int id)
+        {
+            bool response = false;
+            try
+            {
+                var activoEmpleadoExist = GetPerson(id);
+                if (activoEmpleadoExist == null)
+                    throw new DirectoryNotFoundException("No se encontro el ActivoEmpleado con ese Id");
+
+                response = personaRepositorio.DeletePersona(id);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e.Message);
+            }
+
+            return response;
+        }
     }
 }

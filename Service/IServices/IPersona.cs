@@ -14,5 +14,7 @@ namespace Service.IServices
         List<EmpleadoVM> GetEmpleados();
         Empleado RegisterEmpleado(PostEmpleadoRequest request);
         ActivoEmpleadoVM? GetPerson(int  id);
+        Persona PatchPersona(int id, PatchPersonaRequest request);
+        bool DeletePerson(int id);
     }
 }

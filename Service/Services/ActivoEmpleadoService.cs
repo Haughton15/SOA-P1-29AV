@@ -10,6 +10,7 @@ using Repository.Context;
 using Domain.Entities;
 using Domain.Models.Requests;
 using Azure.Core;
+using Azure;
 
 namespace Service.Services
 {
@@ -33,8 +34,19 @@ namespace Service.Services
 
         public bool DeleteActivoEmpleado(int id)
         {
-            GetActivoEmpleado(id);
-            var response = activoEmpleadoRepository.DeleteActivoEmpleado(id);
+            bool response = false;
+            try
+            {
+                var activoEmpleadoExist = GetActivoEmpleado(id);
+                if (activoEmpleadoExist == null)
+                    throw new DirectoryNotFoundException("No se encontro el ActivoEmpleado con ese Id");
+
+                response = activoEmpleadoRepository.DeleteActivoEmpleado(id);
+            } catch (Exception e)
+            {
+                _logger.LogError(e.Message);
+            }
+            
             return response;
         }
 
@@ -46,8 +58,18 @@ namespace Service.Services
 
         public ActivoEmpleado PatchActivoEmpleado(int id, PatchActivoEmpleado request)
         {
-            GetActivoEmpleado(id);
-            var response = activoEmpleadoRepository.PatchActivoEmpleado(id, request);
+            ActivoEmpleado response = new ActivoEmpleado();
+            try
+            {
+                var activoEmpleadoExist= GetActivoEmpleado(id);
+                if (activoEmpleadoExist == null)
+                    throw new DirectoryNotFoundException("No se encontro el ActivoEmpleado con ese Id");
+
+                response = activoEmpleadoRepository.PatchActivoEmpleado(id, request);
+                
+            } catch (Exception e) {
+                _logger.LogError(e.Message);
+            }
             return response;
         }
 

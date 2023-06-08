@@ -33,6 +33,9 @@ namespace Domain.Models.Requests
         [Required(ErrorMessage = "El campo email es requerido"),
         MaxLength(50, ErrorMessage = "El email tiene que ser menor a 50 caracteres")]
         public string Email { get; set; } = string.Empty;
+        [Required(ErrorMessage = "El campo password es requerido"),
+         MaxLength(50, ErrorMessage = "Los password tiene que ser menor a 50 caracteres")]
+        public string Password { get; set; } = string.Empty;
         [Required(ErrorMessage = "El campo fecha de nacimiento es requerido")]
         [DataType(DataType.Date)]
         public DateTime FechaNacimiento { get; set; }

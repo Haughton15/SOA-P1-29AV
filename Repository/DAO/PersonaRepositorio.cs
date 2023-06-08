@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Repository.Context;
 using System.Data;
+using BCryptNet = BCrypt.Net.BCrypt;
 
 namespace Repository.DAO
 {
@@ -55,11 +56,6 @@ namespace Repository.DAO
 
         public Empleado RegisterEmpleado(PostEmpleadoRequest request)
         {
-            Empleado empleadoVal = new Empleado();
-            empleadoVal = _context.Empleados.FirstOrDefault(e => e.NumEmpleado == request.NumEmp);
-            if (empleadoVal != null)
-                throw new Exception("Dato repetido");
-
             Empleado empleado = new Empleado
             {
                 NumEmpleado = request.NumEmp,
@@ -73,6 +69,8 @@ namespace Repository.DAO
             //Cambiar el siguiente a el ultimo guardado
             empleado = _context.Empleados.OrderByDescending(e => e.IdEmpleado).FirstOrDefault();
 
+            string hashedPassword = BCryptNet.HashPassword(request.Password);
+
             Persona persona = new Persona
             {
                 Nombre = request.Nombre,
@@ -80,12 +78,52 @@ namespace Repository.DAO
                 CURP = request.CURP,
                 Email = request.Email,
                 FechaNacimiento = request.FechaNacimiento,
-                Id_Empleado = empleado.IdEmpleado
+                Id_Empleado = empleado.IdEmpleado,
+                Password = hashedPassword
+
             };
             Console.WriteLine("Save persona");
             _context.Personas.Add(persona);
             _context.SaveChanges();
             return empleado;
+        }
+
+        public Persona PatchPersona(int id, PatchPersonaRequest request)
+        {
+            var entity = GetPerson(id);
+            if (request.Nombre != null)
+                entity.Nombre = request.Nombre;
+
+            if (request.Apellidos != null)
+                entity.Apellidos = request.Apellidos;
+
+            if (request.CURP != null)
+                entity.CURP = request.CURP;
+
+            if (request.Email != null)
+                entity.Email = request.Email;
+
+            if (request.FechaNacimiento != null)
+                entity.FechaNacimiento = request.FechaNacimiento;
+
+            if (request.NumEmpleado != null)
+                entity.Empleado.NumEmpleado = request.NumEmpleado;
+
+            if (request.Estatus != null)
+                entity.Empleado.Estatus = request.Estatus;
+
+            if (request.FechaIngreso != null)
+                entity.Empleado.FechaIngreso = request.FechaIngreso;
+
+            _context.Personas.Update(entity);
+            _context.SaveChanges();
+            return entity;
+        }
+
+        public bool DeletePersona(int id)
+        {
+
+            return true;
         }
     }
 }
