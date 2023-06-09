@@ -3,6 +3,7 @@ using Domain.Entities;
 using Domain.Models.Requests;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using Repository.Context;
 using System.Data;
 using BCryptNet = BCrypt.Net.BCrypt;
@@ -42,15 +43,14 @@ namespace Repository.DAO
                                         .ThenInclude(y => y.ActivoEmpleado)
                                         .ThenInclude(xy => xy.Activo)
                                         .FirstOrDefault(e => e.Id_Empleado == id);
+            if(persona != null) {
+                if (persona.Empleado.Persona != null)
+                    persona.Empleado.Persona = null;
 
-            if(persona.Empleado.Persona != null)
-            persona.Empleado.Persona = null;
-
-            if(persona.Empleado.ActivoEmpleado != null)
-            {
-                persona.Empleado.ActivoEmpleado.Empleado = null;
+                if (persona.Empleado.ActivoEmpleado != null)
+                    persona.Empleado.ActivoEmpleado.Empleado = null;
             }
-            
+
             return persona;
         }
 
@@ -91,28 +91,29 @@ namespace Repository.DAO
         public Persona PatchPersona(int id, PatchPersonaRequest request)
         {
             var entity = GetPerson(id);
-            if (request.Nombre != null)
+
+            if(request.Nombre != null)
                 entity.Nombre = request.Nombre;
 
-            if (request.Apellidos != null)
+            if(!request.Apellidos.IsNullOrEmpty())
                 entity.Apellidos = request.Apellidos;
 
-            if (request.CURP != null)
+            if(request.CURP != null)
                 entity.CURP = request.CURP;
 
-            if (request.Email != null)
+            if(request.Email != null)
                 entity.Email = request.Email;
 
-            if (request.FechaNacimiento != null)
+            if(request.FechaNacimiento != null)
                 entity.FechaNacimiento = request.FechaNacimiento;
 
-            if (request.NumEmpleado != null)
+            if(request.NumEmpleado != null)
                 entity.Empleado.NumEmpleado = request.NumEmpleado;
 
-            if (request.Estatus != null)
+            if(request.Estatus != null)
                 entity.Empleado.Estatus = request.Estatus;
 
-            if (request.FechaIngreso != null)
+            if(request.FechaIngreso != null)
                 entity.Empleado.FechaIngreso = request.FechaIngreso;
 
             _context.Personas.Update(entity);
@@ -122,8 +123,36 @@ namespace Repository.DAO
 
         public bool DeletePersona(int id)
         {
+            var found = GetPerson(id);
+            if (found == null)
+            {
+                return false;
+            }
 
+            Persona? person = new Persona();
+            person = _context.Personas.FirstOrDefault(e => e.Id_Empleado == id);
+
+            ActivoEmpleado? activoEmplado = new ActivoEmpleado();
+            if (activoEmplado.IdEmpleado == person.Id_Empleado) {
+                activoEmplado = _context.ActivosEmpleados.FirstOrDefault(e => e.IdEmpleado == person.Id_Empleado);
+                _context.ActivosEmpleados.Remove(activoEmplado);
+            }
+
+            Empleado? empleado = new Empleado();
+            empleado = _context.Empleados.FirstOrDefault(e => e.IdEmpleado == person.Id_Empleado);
+
+            _context.Personas.Remove(person);
+            _context.Empleados.Remove(empleado);
+            _context.SaveChanges();
             return true;
+        }
+
+        public Persona GetUserLogin(string correo)
+        {
+            Persona persona = new Persona();
+            persona = _context.Personas.FirstOrDefault(x => x.Email == correo);
+
+            return persona;
         }
     }
 }

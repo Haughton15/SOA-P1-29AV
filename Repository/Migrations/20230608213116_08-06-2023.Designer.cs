@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Repository.Context;
 
@@ -11,9 +12,11 @@ using Repository.Context;
 namespace Repository.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230608213116_08-06-2023")]
+    partial class _08062023
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -45,7 +48,7 @@ namespace Repository.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Activos", (string)null);
+                    b.ToTable("Activos");
                 });
 
             modelBuilder.Entity("Domain.Entities.ActivoEmpleado", b =>
@@ -79,7 +82,7 @@ namespace Repository.Migrations
                         .IsUnique()
                         .HasFilter("[IdEmpleado] IS NOT NULL");
 
-                    b.ToTable("ActivosEmpleados", (string)null);
+                    b.ToTable("ActivosEmpleados");
                 });
 
             modelBuilder.Entity("Domain.Entities.Empleado", b =>
@@ -101,7 +104,7 @@ namespace Repository.Migrations
 
                     b.HasKey("IdEmpleado");
 
-                    b.ToTable("Empleados", (string)null);
+                    b.ToTable("Empleados");
                 });
 
             modelBuilder.Entity("Domain.Entities.Persona", b =>
@@ -149,7 +152,7 @@ namespace Repository.Migrations
                         .IsUnique()
                         .HasFilter("[Id_Empleado] IS NOT NULL");
 
-                    b.ToTable("Personas", (string)null);
+                    b.ToTable("Personas");
                 });
 
             modelBuilder.Entity("Domain.Entities.ActivoEmpleado", b =>

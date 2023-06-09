@@ -3,6 +3,7 @@ using Domain.Entities;
 using Domain.Models.Requests;
 using Microsoft.AspNetCore.Mvc;
 using Service.IServices;
+using Service.Services;
 using Swashbuckle.AspNetCore.Annotations;
 using System.Net;
 
@@ -48,6 +49,33 @@ namespace SOAP1_29AV.Controllers
                 return BadRequest();
             
             return Ok("Usuario creado con exito");
+        }
+
+        [HttpPatch("{id}")]
+        [SwaggerResponse((int)HttpStatusCode.OK)]
+        [SwaggerResponse((int)HttpStatusCode.NotFound)]
+
+        public ActionResult<ActivoEmpleado> PatchPersona([FromRoute] int id, [FromBody] PatchPersonaRequest request)
+        {
+            var response = _persona.PatchPersona(id, request);
+            if (response == null)
+            {
+                return NotFound();
+            }
+            return Ok(response);
+        }
+
+        [HttpDelete("{id}")]
+        [SwaggerResponse((int)HttpStatusCode.OK)]
+        [SwaggerResponse((int)HttpStatusCode.NotFound)]
+        public ActionResult<bool> DeletePersona(int id)
+        {
+            var response = _persona.DeletePerson(id);
+            if (response == false)
+            {
+                return NotFound();
+            }
+            return Ok("Registro eliminado con exito");
         }
     }
 }

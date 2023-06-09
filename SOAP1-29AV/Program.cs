@@ -33,6 +33,7 @@ builder.Services.AddTransient<IPersona, PersonaServicio>();
 builder.Services.AddTransient<IEmail, MailService>();
 builder.Services.AddTransient<IActivo, ActivoService>();
 builder.Services.AddTransient<IActivoEmpleado, ActivoEmpleadoService>();
+builder.Services.AddTransient<ILogin, LoginService>();
 // Add services to the container.
 
 builder.Services.AddHttpClient();

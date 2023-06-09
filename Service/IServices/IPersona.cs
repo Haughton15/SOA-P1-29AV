@@ -16,5 +16,6 @@ namespace Service.IServices
         ActivoEmpleadoVM? GetPerson(int  id);
         Persona PatchPersona(int id, PatchPersonaRequest request);
         bool DeletePerson(int id);
+        Persona GetUserLogin(string correo);
     }
 }

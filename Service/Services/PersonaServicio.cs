@@ -113,8 +113,8 @@ namespace Service.Services
             Persona response = new Persona();
             try
             {
-                var activoEmpleadoExist = GetPerson(id);
-                if (activoEmpleadoExist != null)
+                var persona = GetPerson(id);
+                if (persona != null)
                     throw new DirectoryNotFoundException("No se encontro ninguna persona con ese Id");
 
                 response = personaRepositorio.PatchPersona(id, request);
@@ -132,8 +132,8 @@ namespace Service.Services
             bool response = false;
             try
             {
-                var activoEmpleadoExist = GetPerson(id);
-                if (activoEmpleadoExist == null)
+                var persona = GetPerson(id);
+                if (persona == null)
                     throw new DirectoryNotFoundException("No se encontro el ActivoEmpleado con ese Id");
 
                 response = personaRepositorio.DeletePersona(id);
@@ -144,6 +144,24 @@ namespace Service.Services
             }
 
             return response;
+        }
+
+        public Persona GetUserLogin(string correo)
+        {
+            Persona persona = new Persona();
+            try
+            {
+                persona = personaRepositorio.GetUserLogin(correo);
+
+                if (persona == null)
+                    throw new DirectoryNotFoundException("No se encontro a ninguna persona con ese correo electronico");
+
+            } catch (Exception e)
+            {
+                _logger.LogError(e.Message);
+            }
+
+            return persona;
         }
     }
 }
