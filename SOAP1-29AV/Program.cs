@@ -36,8 +36,8 @@ builder.Services.AddTransient<IActivoEmpleado, ActivoEmpleadoService>();
 builder.Services.AddTransient<ILogin, LoginService>();
 // Add services to the container.
 
-builder.Services.AddHttpClient();
-builder.Services.AddHostedService<TareaRecurrente>();
+//builder.Services.AddHttpClient();
+//builder.Services.AddHostedService<TareaRecurrente>();
 
 
 builder.Services.AddControllers();

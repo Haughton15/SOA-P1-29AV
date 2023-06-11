@@ -36,16 +36,18 @@ namespace Service.Services
             {
                 MailMessage mailMessage = new MailMessage();
                 mailMessage.From = new MailAddress(_configuration["SmtpConfig:SmtpUsername"]);
-                DateTime twoDaysLater = DateTime.Now.AddDays(2);
+                //DateTime twoDaysLater = DateTime.Now.AddDays(2);
                 foreach (var user in list)
                 {
-                    if(user.FechaEntrega.Date == twoDaysLater.Date)
+                    mailMessage.To.Add(user.Empleado.Persona.Email.Trim());
+                    Console.WriteLine(user.Empleado.Persona.Email.Trim());
+                    /*if(user.FechaEntrega.Date == twoDaysLater.Date)
                     {
                         Console.WriteLine(user.FechaEntrega.Date);
                         Console.WriteLine(twoDaysLater.Date);
                         mailMessage.To.Add(user.Empleado.Persona.Email.Trim());
                         Console.WriteLine(user.Empleado.Persona.Email.Trim());
-                    }
+                    }*/
                 }
                 mailMessage.Subject = "Subject of the email";
                 mailMessage.Body = "La entrega de su activo es dentro de 2 dias";

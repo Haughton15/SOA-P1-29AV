@@ -51,7 +51,7 @@ namespace SOAP1_29AV.Controllers
             return Ok("Usuario creado con exito");
         }
 
-        [HttpPatch("{id}")]
+        [HttpPut("{id}")]
         [SwaggerResponse((int)HttpStatusCode.OK)]
         [SwaggerResponse((int)HttpStatusCode.NotFound)]
 

@@ -12,6 +12,7 @@ namespace SOAP1_29AV.Controllers
     public class LoginController : Controller
     {
         private readonly ILogin _loginService;
+        private readonly IPersona _persona;
         public LoginController(ILogin login)
         {
             _loginService = login;
@@ -21,7 +22,13 @@ namespace SOAP1_29AV.Controllers
         [SwaggerResponse((int)HttpStatusCode.Created)]
         public IActionResult PostILogin([FromBody] PostLoginRequest request)
         {
-            return Ok(_loginService.Login(request));
+            if(_loginService.Login(request) == false){
+                return BadRequest("Credenciales incorrectas");
+
+            } else {
+                return Ok("Login correcto, bienvenido");
+
+            }
         }
     }
 }

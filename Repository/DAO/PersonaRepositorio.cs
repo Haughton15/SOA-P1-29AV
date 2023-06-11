@@ -91,11 +91,13 @@ namespace Repository.DAO
         public Persona PatchPersona(int id, PatchPersonaRequest request)
         {
             var entity = GetPerson(id);
+            if (entity == null)
+                return null;
 
             if(request.Nombre != null)
                 entity.Nombre = request.Nombre;
 
-            if(!request.Apellidos.IsNullOrEmpty())
+            if(request.Apellidos != null)
                 entity.Apellidos = request.Apellidos;
 
             if(request.CURP != null)
@@ -116,7 +118,7 @@ namespace Repository.DAO
             if(request.FechaIngreso != null)
                 entity.Empleado.FechaIngreso = request.FechaIngreso;
 
-            _context.Personas.Update(entity);
+            //_context.Personas.Update(entity);
             _context.SaveChanges();
             return entity;
         }

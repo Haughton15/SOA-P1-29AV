@@ -15,29 +15,32 @@ namespace Service.Services
     {
         private readonly IPersona _persona;
         private readonly ILogger<LoginService> _logger;
-        private string _mensaje;
+        private bool _mensaje;
         public LoginService(IPersona persona, ILogger<LoginService> logger)
         {
 
             _persona = persona;
             _logger = logger;
         }
-        public string Login(PostLoginRequest request)
+        public bool Login(PostLoginRequest request)
         {
             bool passwordsMatch;
             try
             {
                 var persona = _persona.GetUserLogin(request.Email);
                 if (persona == null)
-                    throw new DirectoryNotFoundException("Credenciales incorrectas");
+                    return false;
 
                 passwordsMatch = BCrypt.Net.BCrypt.Verify(request.Password, persona.Password);
                 if (!passwordsMatch)
                 {
-                    throw new DirectoryNotFoundException("Credenciales incorrectas");
+                    _mensaje = false;
+                } else
+                {
+                    _mensaje = true;
                 }
 
-                _mensaje = "Login correcto, bienvenido: " + persona.Nombre; 
+                
             }
             catch (Exception e)
             {

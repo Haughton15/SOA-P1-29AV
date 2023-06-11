@@ -69,6 +69,9 @@ namespace Service.Services
              try
              {
                 persona = personaRepositorio.GetPerson(id);
+                if (persona == null)
+                    throw new DirectoryNotFoundException("No se econtro ese registro");
+
                 if(persona.Empleado.ActivoEmpleado != null)
                 {
                     activoEmpleadoVM = new ActivoEmpleadoVM
@@ -113,12 +116,7 @@ namespace Service.Services
             Persona response = new Persona();
             try
             {
-                var persona = GetPerson(id);
-                if (persona != null)
-                    throw new DirectoryNotFoundException("No se encontro ninguna persona con ese Id");
-
                 response = personaRepositorio.PatchPersona(id, request);
-
             }
             catch (Exception e)
             {

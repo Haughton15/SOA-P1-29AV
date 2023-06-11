@@ -9,6 +9,6 @@ namespace Service.IServices
 {
     public interface ILogin
     {
-        string Login(PostLoginRequest request);
+        bool Login(PostLoginRequest request);
     }
 }
