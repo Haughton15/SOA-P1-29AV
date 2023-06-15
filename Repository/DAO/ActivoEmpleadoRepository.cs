@@ -26,6 +26,13 @@ namespace Repository.DAO
             return response;
         }
 
+        public ActivoEmpleado GetActivoEmpleadoByIdEmpleado(int id)
+        {
+            var response = _context.ActivosEmpleados.Include(y => y.Activo).FirstOrDefault(x => x.IdPersona == id);
+
+            return response;
+        }
+
         public bool DeleteActivoEmpleado(int id)
         {
             var found = GetActivoEmpleado(id);
@@ -49,7 +56,7 @@ namespace Repository.DAO
 
             ActivoEmpleado activoEmpleado = new ActivoEmpleado
             {
-                IdEmpleado = request.id_empleado,
+                IdPersona = request.id_empleado,
                 IdActivo = request.id_activo,
                 FechaAsignacion = DateTime.Today,
                 FechaEntrega = request.FechaEntrega,
@@ -63,18 +70,17 @@ namespace Repository.DAO
             _context.ActivosEmpleados.Add(activoEmpleado);
             _context.SaveChanges();
             Console.WriteLine("Save empleado");
-            //Cambiar el siguiente a el ultimo guardado
-            activoEmpleado = _context.ActivosEmpleados.Where(e => e.IdEmpleado == request.id_empleado).FirstOrDefault();
             return activoEmpleado;
         }
 
         public ActivoEmpleado PatchActivoEmpleado(int id, PatchActivoEmpleado request)
         {
             var entity = GetActivoEmpleado(id);
-            if(request.FechaLiberacion != null)
+            DateTime defaultDate = new DateTime(1, 1, 1);
+            if (request.FechaLiberacion != defaultDate);
             entity.FechaLiberacion = request.FechaLiberacion;
 
-            if(request.FechaEntrega != null)
+            if(request.FechaEntrega != defaultDate)
             entity.FechaEntrega = request.FechaEntrega;
 
             _context.ActivosEmpleados.Update(entity);
@@ -86,7 +92,7 @@ namespace Repository.DAO
         {
 
             List<ActivoEmpleado> activoEmpleados = new List<ActivoEmpleado>();
-            activoEmpleados = _context.ActivosEmpleados.Include(x => x.Empleado).ThenInclude(y => y.Persona).ToList();
+            activoEmpleados = _context.ActivosEmpleados.Include(y => y.Persona).ToList();
 
             return activoEmpleados;
         }

@@ -12,8 +12,8 @@ using Repository.Context;
 namespace Repository.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230525231858_25-05-2023-2.0")]
-    partial class _2505202320
+    [Migration("20230615015807_14-06-2023")]
+    partial class _14062023
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -71,14 +71,14 @@ namespace Repository.Migrations
                     b.Property<int?>("IdActivo")
                         .HasColumnType("int");
 
-                    b.Property<int?>("IdEmpleado")
+                    b.Property<int?>("IdPersona")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("IdActivo");
 
-                    b.HasIndex("IdEmpleado");
+                    b.HasIndex("IdPersona");
 
                     b.ToTable("ActivosEmpleados");
                 });
@@ -139,6 +139,10 @@ namespace Repository.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("Id_Empleado");
@@ -152,13 +156,13 @@ namespace Repository.Migrations
                         .WithMany()
                         .HasForeignKey("IdActivo");
 
-                    b.HasOne("Domain.Entities.Empleado", "Empleado")
+                    b.HasOne("Domain.Entities.Persona", "Persona")
                         .WithMany()
-                        .HasForeignKey("IdEmpleado");
+                        .HasForeignKey("IdPersona");
 
                     b.Navigation("Activo");
 
-                    b.Navigation("Empleado");
+                    b.Navigation("Persona");
                 });
 
             modelBuilder.Entity("Domain.Entities.Persona", b =>

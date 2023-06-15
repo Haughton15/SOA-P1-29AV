@@ -12,8 +12,8 @@ namespace Domain.Entities
     [Table("Empleados")]
     public class Empleado 
     {
-        public Persona Persona { get; set; }
-        public ActivoEmpleado ActivoEmpleado { get; set; }
+        //public Persona Persona { get; set; }
+        //public ActivoEmpleado ActivoEmpleado { get; set; }
 
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -24,7 +24,5 @@ namespace Domain.Entities
         public bool Estatus { get; set; }
         [DataType(DataType.Date)]
         public DateTime FechaIngreso { get; set; }
-
-        //public ICollection<ActivoEmpleado> ActivoEmpleados { get; set; } 
     }
 }

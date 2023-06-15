@@ -45,7 +45,7 @@ namespace Repository.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Activos", (string)null);
+                    b.ToTable("Activos");
                 });
 
             modelBuilder.Entity("Domain.Entities.ActivoEmpleado", b =>
@@ -68,18 +68,16 @@ namespace Repository.Migrations
                     b.Property<int?>("IdActivo")
                         .HasColumnType("int");
 
-                    b.Property<int?>("IdEmpleado")
+                    b.Property<int?>("IdPersona")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("IdActivo");
 
-                    b.HasIndex("IdEmpleado")
-                        .IsUnique()
-                        .HasFilter("[IdEmpleado] IS NOT NULL");
+                    b.HasIndex("IdPersona");
 
-                    b.ToTable("ActivosEmpleados", (string)null);
+                    b.ToTable("ActivosEmpleados");
                 });
 
             modelBuilder.Entity("Domain.Entities.Empleado", b =>
@@ -101,7 +99,7 @@ namespace Repository.Migrations
 
                     b.HasKey("IdEmpleado");
 
-                    b.ToTable("Empleados", (string)null);
+                    b.ToTable("Empleados");
                 });
 
             modelBuilder.Entity("Domain.Entities.Persona", b =>
@@ -140,16 +138,13 @@ namespace Repository.Migrations
 
                     b.Property<string>("Password")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Id_Empleado")
-                        .IsUnique()
-                        .HasFilter("[Id_Empleado] IS NOT NULL");
+                    b.HasIndex("Id_Empleado");
 
-                    b.ToTable("Personas", (string)null);
+                    b.ToTable("Personas");
                 });
 
             modelBuilder.Entity("Domain.Entities.ActivoEmpleado", b =>
@@ -158,31 +153,22 @@ namespace Repository.Migrations
                         .WithMany()
                         .HasForeignKey("IdActivo");
 
-                    b.HasOne("Domain.Entities.Empleado", "Empleado")
-                        .WithOne("ActivoEmpleado")
-                        .HasForeignKey("Domain.Entities.ActivoEmpleado", "IdEmpleado");
+                    b.HasOne("Domain.Entities.Persona", "Persona")
+                        .WithMany()
+                        .HasForeignKey("IdPersona");
 
                     b.Navigation("Activo");
 
-                    b.Navigation("Empleado");
+                    b.Navigation("Persona");
                 });
 
             modelBuilder.Entity("Domain.Entities.Persona", b =>
                 {
                     b.HasOne("Domain.Entities.Empleado", "Empleado")
-                        .WithOne("Persona")
-                        .HasForeignKey("Domain.Entities.Persona", "Id_Empleado");
+                        .WithMany()
+                        .HasForeignKey("Id_Empleado");
 
                     b.Navigation("Empleado");
-                });
-
-            modelBuilder.Entity("Domain.Entities.Empleado", b =>
-                {
-                    b.Navigation("ActivoEmpleado")
-                        .IsRequired();
-
-                    b.Navigation("Persona")
-                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

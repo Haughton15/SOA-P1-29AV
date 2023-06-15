@@ -20,7 +20,7 @@ namespace Repository.DAO
         }
         public List<Persona> ObtenerLista()
         {
-            List<Persona> lista = new List<Persona>();
+            List<Persona> lista = new();
 
             lista = _context.Personas.Include(x => x.Empleado).ToList();
 
@@ -36,20 +36,28 @@ namespace Repository.DAO
             return list;
         }
 
+        public Empleado GetEmpleadoUpdate(int id)
+        {
+            Empleado empleado = new();
+
+            empleado = _context.Empleados.IgnoreAutoIncludes().FirstOrDefault(x=> x.IdEmpleado==id);
+
+            return empleado;
+        }
+
+        public Persona GetPersonUpdate(int id)
+        {
+            Persona? persona = new Persona();
+
+            persona = _context.Personas.IgnoreAutoIncludes().FirstOrDefault(x => x.Id_Empleado == id);
+            return persona;
+        }
+
         public Persona GetPerson(int id)
         {
             Persona? persona = new Persona();
             persona = _context.Personas.Include(x => x.Empleado)
-                                        .ThenInclude(y => y.ActivoEmpleado)
-                                        .ThenInclude(xy => xy.Activo)
-                                        .FirstOrDefault(e => e.Id_Empleado == id);
-            if(persona != null) {
-                if (persona.Empleado.Persona != null)
-                    persona.Empleado.Persona = null;
-
-                if (persona.Empleado.ActivoEmpleado != null)
-                    persona.Empleado.ActivoEmpleado.Empleado = null;
-            }
+                                        .FirstOrDefault(e => e.Id == id);
 
             return persona;
         }
@@ -90,37 +98,39 @@ namespace Repository.DAO
 
         public Persona PatchPersona(int id, PatchPersonaRequest request)
         {
-            var entity = GetPerson(id);
-            if (entity == null)
+            var entityPerson = GetPersonUpdate(id);
+            var entityEmpleado = GetEmpleadoUpdate(id);
+            DateTime defaultDate = new DateTime(1, 1, 1);
+
+            if (entityPerson == null || entityEmpleado == null)
                 return null;
 
             if(request.Nombre != null)
-                entity.Nombre = request.Nombre;
+                entityPerson.Nombre = request.Nombre;
 
             if(request.Apellidos != null)
-                entity.Apellidos = request.Apellidos;
+                entityPerson.Apellidos = request.Apellidos;
 
             if(request.CURP != null)
-                entity.CURP = request.CURP;
+                entityPerson.CURP = request.CURP;
 
             if(request.Email != null)
-                entity.Email = request.Email;
+                entityPerson.Email = request.Email;
 
-            if(request.FechaNacimiento != null)
-                entity.FechaNacimiento = request.FechaNacimiento;
+            if(request.FechaNacimiento != defaultDate)
+                entityPerson.FechaNacimiento = request.FechaNacimiento;
 
-            if(request.NumEmpleado != null)
-                entity.Empleado.NumEmpleado = request.NumEmpleado;
+            if(request.NumEmpleado != 0)
+                entityEmpleado.NumEmpleado = request.NumEmpleado;
 
-            if(request.Estatus != null)
-                entity.Empleado.Estatus = request.Estatus;
+            if(request.Estatus != entityEmpleado.Estatus)
+                entityEmpleado.Estatus = request.Estatus;
 
-            if(request.FechaIngreso != null)
-                entity.Empleado.FechaIngreso = request.FechaIngreso;
+            if(request.FechaIngreso != defaultDate)
+                entityEmpleado.FechaIngreso = request.FechaIngreso;
 
-            //_context.Personas.Update(entity);
             _context.SaveChanges();
-            return entity;
+            return entityPerson;
         }
 
         public bool DeletePersona(int id)
@@ -135,8 +145,12 @@ namespace Repository.DAO
             person = _context.Personas.FirstOrDefault(e => e.Id_Empleado == id);
 
             ActivoEmpleado? activoEmplado = new ActivoEmpleado();
-            if (activoEmplado.IdEmpleado == person.Id_Empleado) {
-                activoEmplado = _context.ActivosEmpleados.FirstOrDefault(e => e.IdEmpleado == person.Id_Empleado);
+            Activo? activo = new();
+            if (activoEmplado.IdPersona == person.Id) {
+                activoEmplado = _context.ActivosEmpleados.FirstOrDefault(e => e.IdPersona == person.Id);
+                activo = _context.Activos.FirstOrDefault(e => e.Id == activoEmplado.IdActivo);
+                activo.Estatus = false;
+                _context.Activos.Update(activo);
                 _context.ActivosEmpleados.Remove(activoEmplado);
             }
 

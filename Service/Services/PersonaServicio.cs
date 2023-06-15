@@ -13,11 +13,13 @@ namespace Service.Services
     {
         private readonly ILogger<PersonaServicio> _logger;
         public readonly PersonaRepositorio personaRepositorio;
+        public readonly ActivoEmpleadoRepository activoEmpleadoRepository;
 
         public PersonaServicio(ILogger<PersonaServicio> logger, ApplicationDbContext context)
         {
             _logger = logger;
             personaRepositorio = new PersonaRepositorio(context);
+            activoEmpleadoRepository = new ActivoEmpleadoRepository(context);
         }
 
         public List<Persona> ObtenerLista()
@@ -65,36 +67,36 @@ namespace Service.Services
         public ActivoEmpleadoVM? GetPerson(int id)
          {
             Persona persona = new Persona();
+            ActivoEmpleado activoEmpleado = new();
             ActivoEmpleadoVM? activoEmpleadoVM = new ActivoEmpleadoVM();
              try
              {
                 persona = personaRepositorio.GetPerson(id);
-                if (persona == null)
-                    throw new DirectoryNotFoundException("No se econtro ese registro");
+                activoEmpleado = activoEmpleadoRepository.GetActivoEmpleadoByIdEmpleado(id);
 
-                if(persona.Empleado.ActivoEmpleado != null)
+                if(activoEmpleado != null)
                 {
                     activoEmpleadoVM = new ActivoEmpleadoVM
                     {
-                        IdEmpleado = (int)persona.Id_Empleado,
+                        IdEmpleado = (int)persona.Id,
                         E_Nombre = persona.Nombre,
                         E_Apellidos = persona.Apellidos,
                         E_Curp = persona.CURP,
                         E_Email = persona.Email,
                         E_FechaNacimiento = persona.FechaNacimiento,
                         E_NumEmp = persona.Empleado.NumEmpleado,
-                        IdActivoEmpleado = persona.Empleado.ActivoEmpleado.Id,
-                        AE_FechaAsignacion = persona.Empleado.ActivoEmpleado.FechaAsignacion,
-                        AE_FechaLiberacion = persona.Empleado.ActivoEmpleado.FechaLiberacion,
-                        AE_FechaEntrega = persona.Empleado.ActivoEmpleado.FechaEntrega,
-                        IdActivo = persona.Empleado.ActivoEmpleado.Activo.Id,
-                        A_Nombre = persona.Empleado.ActivoEmpleado.Activo.Nombre,
-                        A_Descripcion = persona.Empleado.ActivoEmpleado.Activo.Descripcion
+                        IdActivoEmpleado = activoEmpleado.Id,
+                        AE_FechaAsignacion = activoEmpleado.FechaAsignacion,
+                        AE_FechaLiberacion = activoEmpleado.FechaLiberacion,
+                        AE_FechaEntrega = activoEmpleado.FechaEntrega,
+                        IdActivo = activoEmpleado.Activo.Id,
+                        A_Nombre = activoEmpleado.Activo.Nombre,
+                        A_Descripcion = activoEmpleado.Activo.Descripcion
                     };
                 } else {
                     activoEmpleadoVM = new ActivoEmpleadoVM
                     {
-                        IdEmpleado = (int)persona.Id_Empleado,
+                        IdEmpleado = (int)persona.Id,
                         E_Nombre = persona.Nombre,
                         E_Apellidos = persona.Apellidos,
                         E_Curp = persona.CURP,

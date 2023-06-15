@@ -15,9 +15,9 @@ namespace Domain.Entities
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-        [ForeignKey("Empleado")]
-        public int? IdEmpleado { get; set; }
-        public virtual Empleado Empleado { get; set; }
+        [ForeignKey("Persona")]
+        public int? IdPersona { get; set; }
+        public virtual Persona Persona { get; set; }
         [ForeignKey("Activo")]
         public int? IdActivo { get; set; }
         public virtual Activo Activo { get; set; }
